@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Database\DB;
+use App\Core\DB;
 use Exception;
-use ReflectionClass;
 use ReflectionException;
 
 class Repository
@@ -73,9 +72,9 @@ class Repository
     /**
      * @throws Exception
      */
-    public function create(array $data): void
+    public function create(array $data)
     {
-        $this->db->create($this->table, $data);
+      return  $this->db->create($this->table, $data);
     }
 
     /**

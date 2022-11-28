@@ -6,4 +6,5 @@ use App\Controllers\MainController;
 
 Route::GET('/',[MainController::class, 'index']);
 Route::GET('/result',[MainController::class, 'result']);
+Route::GET('/factory',[MainController::class, 'factory']);
 

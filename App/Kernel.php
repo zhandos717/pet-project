@@ -4,6 +4,7 @@ namespace App;
 
 use App\Core\Route;
 use App\Di\Container;
+use Database\Seeders\DataBaseSeeder;
 use Exception;
 
 class Kernel
@@ -14,6 +15,11 @@ class Kernel
     {
         try {
             $this->handleRoute();
+
+            if (config('app.seeder')) {
+                app(DataBaseSeeder::class,'run');
+            }
+
         } catch (Exception $exception) {
             echo "Ошибка:  {$exception->getMessage()} <br>
                   Файл:  {$exception->getFile()} <br>

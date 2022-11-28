@@ -8,5 +8,5 @@ return [
 
     'sqlite'=>[
         'path'=> ROOT_PATH .'/database/database.sqlite',
-    ]
+    ],
 ];

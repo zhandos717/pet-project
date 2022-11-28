@@ -49,10 +49,10 @@ if (!function_exists('app')) {
     /**
      * @throws ReflectionException
      */
-    function app(string $class): ?object
+    function app(string $class, ?string $method = null ): ?object
     {
         $container = new Container();
-        return $container->has($class) ? $container->get($class) : null;
+        return $container->has($class) ? $container->get($class,$method) : null;
     }
 }
 
@@ -99,9 +99,7 @@ if (!function_exists('config')) {
     {
         $arr =  explode('.',$key);
         $file = ROOT_PATH.'config/' . array_shift($arr).'.php';
-
         $data = (include $file);
-
         $result  = '';
 
         array_walk_recursive($data, function($item, $key) use(&$result,&$arr)
@@ -118,9 +116,9 @@ if (!function_exists('config')) {
 }
 
 if (!function_exists('env')) {
-    function env(string $key): string|null
+    function env(string $key, ?string $default = null): string|null
     {
         $array = parse_ini_file(__DIR__.'/../.env');
-        return $array[$key] ?? null;
+        return $array[$key] ?? $default;
     }
 }
