@@ -18,11 +18,11 @@
     <nav class="header__nav">
         <ul class="header__list">
             <li class="header__item">
-                <a href="#!" class="header__link">Начать заново</a>
+                <a href="/" class="header__link">Начать заново</a>
             </li>
 
             <li class="header__item">
-                <a href="#!" class="header__link">В конец теста</a>
+                <a href="#end" class="header__link">В конец теста</a>
             </li>
         </ul>
     </nav>
@@ -58,6 +58,7 @@
         <?php endforeach; endif;?>
         <button class="btn" id="finishBtn" type="submit"> Закончить тест </button>
     </form>
+    <div id="end"></div>
 </section>
 </body>
 </html>

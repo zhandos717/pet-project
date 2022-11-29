@@ -3,11 +3,9 @@
 namespace App\Core;
 
 use App\Config;
-use Database\Seeders\DataBaseSeeder;
 use Exception;
 use PDO;
 use PDOStatement;
-use ReflectionException;
 
 class DB
 {
@@ -17,7 +15,15 @@ class DB
     public function connect(): PDO
     {
         try {
-            $db = new PDO(config('database.default') . ':' . config('database.sqlite.path'));
+            $db = new PDO('sqlite:' . config('database.sqlite.path'));
+
+            if (config('database.default') == 'mysql') {
+                $db = new PDO(
+                    'mysql:host=' . config('database.mysql.host') . ';dbname=' . config('database.mysql.database')
+                    , config('database.mysql.username'), config('database.mysql.password')
+                );
+            }
+
             $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -91,7 +97,6 @@ class DB
         if ($count === 0 && config('app.migrations')) {
             $this->migrate($db);
         }
-
     }
 }
 

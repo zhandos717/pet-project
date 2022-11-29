@@ -37,12 +37,4 @@ final class MainController
             'answers_below' => $answersBelow
         ]);
     }
-
-    /**
-     * @throws ReflectionException
-     */
-    public function factory(Question $questionRepository, Answer $answerRepository): void
-    {
-        QuestionFactory::create($questionRepository, $answerRepository);
-    }
 }
