@@ -14,12 +14,13 @@ use ReflectionException;
 
 final class MainController
 {
+
     /**
      * @throws Exception
      */
-    public function index(Question $questionRepository): void
+    public function index(): void
     {
-        view('index', ['questions' => $questionRepository->answers()]);
+        view('index');
     }
 
     /**
@@ -27,14 +28,10 @@ final class MainController
      */
     public function result(Request $request, ResultService $resultService): void
     {
-        ['total' => $total, 'answersBelow' => $answersBelow] = $resultService->make([
-            'answers' => $request->get('questions'),
-            'uuid'    => $request->get('uuid')
-        ]);
+        $resultService->make(['answers' => $request->get('questions'), 'uuid' => $request->get('uuid')]);
 
         view('result', [
-            'total'         => $total,
-            'answers_below' => $answersBelow
+            'uuid' => $request->get('uuid')
         ]);
     }
 }

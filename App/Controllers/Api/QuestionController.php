@@ -12,15 +12,13 @@ use Database\Factories\QuestionFactory;
 use Exception;
 use ReflectionException;
 
-final class ResultController
+final class QuestionController
 {
     /**
      * @throws Exception
      */
-    public function show(Request $request, ResultService $resultService): void
+    public function index(Question $questionRepository): void
     {
-        echo json_encode(
-            $resultService->getByUUID($request->get('uuid'))
-        );
+        echo json_encode($questionRepository->answers());
     }
 }

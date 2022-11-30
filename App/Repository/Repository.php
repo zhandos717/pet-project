@@ -26,9 +26,9 @@ class Repository
     protected array $casts = [];
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $where;
+    protected ?string $where;
 
     /**
      * @var string
@@ -63,9 +63,7 @@ class Repository
 
     public function where( $column, $operator,  $value = null): self
     {
-
         $this->where = $value === null ? " $column = '$operator' " : " $column $operator '$value' ";
-
         return $this;
     }
 
@@ -83,7 +81,7 @@ class Repository
     public function get(?string $key = null)
     {
         $data = $this->db->query($this->getQueryBuilder())->fetchAll();
-
+        $this->where = null;
         return $data[0][$key] ?? $data;
     }
 

@@ -31,34 +31,47 @@
 <section class="test">
     <div class="test__mainBox">
         <h1 class="test__title">Online Test</h1>
-        <h2 class="test__subtitle">Пройдите этот тест для того чтобы проверить свои знания</h2>
+        <h2 class="test__subtitle">Пройдите этот тест, для того чтобы проверить свои знания</h2>
         <div class="line"></div>
     </div>
     <form action="/result" method="POST">
         <label>
-            <input type="text" hidden name="uuid" value="<?= uuid()?>">
+            <input type="text" hidden name="uuid" value="<?= uuid() ?>">
         </label>
-        <?php
-        if(isset($questions)):
-        foreach ($questions as $key => $question):
-            ?>
-                <div class="test__questionBox">
-                    <div class="test__question" id="test__questionBox">
-                        <h3> <?=$question['id']?>) <?=$question['title']?></h3>
-                    </div>
-                    <?php     if(isset($question['answers'])):
-                        foreach($question['answers'] as $k => $answer):
-                            ?>
-                    <div class="form_radio">
-                        <input id="radio-1" type="radio" required name="<?='questions['.$question['id'].']'?>" value="<?=$answer['id']?>">
-                        <label for="radio-1"><?= $answer['text'] .' No. '. $k+1 ?></label>
-                    </div>
-                    <?php endforeach; endif;?>
-                </div>
-        <?php endforeach; endif;?>
-        <button class="btn" id="finishBtn" type="submit"> Закончить тест </button>
+        <div id="questions">
+        </div>
+        <button class="btn" id="finishBtn" type="submit"> Закончить тест</button>
     </form>
     <div id="end"></div>
 </section>
+<footer>
+    <script>
+        fetch('/api/questions', {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then(response => response.json())
+            .then(result => render(result))
+        function render(items) {
+            let questionsDiv = '';
+            for (let item of items) {
+                questionsDiv += `<div class="test__questionBox">
+                    <div class="test__question" id="test__questionBox">
+                        <h3> ${item.title} </h3>
+                    </div>`;
+                for (let answer of item.answers) {
+                    questionsDiv += `<div class="form_radio">
+                        <input id="radio-1" type="radio" required name="questions[${item.id}]" value="${answer.id}">
+                        <label for="radio-1">${answer.text}</label>
+                    </div>`;
+                }
+                questionsDiv += `</div>`;
+            }
+            document.getElementById('questions').innerHTML = questionsDiv;
+        }
+    </script>
+</footer>
 </body>
 </html>

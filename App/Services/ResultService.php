@@ -49,5 +49,30 @@ final class ResultService
             'total'        => $total,
         ];
     }
+
+
+    /**
+     * @throws Exception
+     */
+    public function getByUUID($uuid): array
+    {
+        $data = $this->result->select()->where('uuid', $uuid)->get();
+
+        if (empty($data)) {
+            return [
+                'answersBelow' => 0,
+                'total'        => 0,
+            ];
+        }
+        ['total' => $total] = array_shift($data);
+
+        $totalResult = $this->result->select(['COUNT(*) as count'])->get('count');
+        $answersBelow = $this->result->select(['COUNT(*) as count'])->where('total', '<', $total)->get('count');
+
+        return [
+            'answersBelow' => get_percent($answersBelow, $totalResult),
+            'total'        => $total,
+        ];
+    }
 }
 

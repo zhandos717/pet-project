@@ -10,7 +10,7 @@ final class Request
 
     public function __construct()
     {
-        $this->request = $_REQUEST;
+        $this->request = array_merge($_REQUEST, (array)json_decode(file_get_contents('php://input')));
     }
 
     public function get($key, $default = null)
