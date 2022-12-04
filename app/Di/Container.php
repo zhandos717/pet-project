@@ -26,7 +26,7 @@ final class Container
      * @return object|null
      * @throws ReflectionException
      */
-    public function get(string $class, ?string $method = null): object|null
+    public function get(string $class, ?string $method = null)
     {
         return
             isset($this->objects[$class])
@@ -40,7 +40,7 @@ final class Container
      * @return object|null
      * @throws ReflectionException
      */
-    private function prepareObject(string $class,?string $method = null): object|null
+    private function prepareObject(string $class,?string $method = null)
     {
         $classReflector = new ReflectionClass($class);
 

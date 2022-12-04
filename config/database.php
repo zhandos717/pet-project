@@ -3,10 +3,10 @@
 return [
     'default'    => env('DB_CONNECTION'),
     'migrations' => [
-        'path' => ROOT_PATH . '/database/migrations/'
+        'path' => root_path() . '/database/migrations/'
     ],
     'sqlite'     => [
-        'path' => ROOT_PATH . 'database/database.sqlite',
+        'path' => root_path() . 'database/database.sqlite',
     ],
     'mysql'      => [
         'host'     => env('DB_HOST'),

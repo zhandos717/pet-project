@@ -45,6 +45,13 @@ class Repository
         $this->table = get_class_name($this) . 's';
     }
 
+    /**
+     * @throws Exception
+     */
+    public function find(int $id){
+        return $this->select()->where('id', $id)->get()[0] ?? [];
+    }
+
     public function select(array $colums = ['*']): self
     {
         $colums = implode(',', $colums);

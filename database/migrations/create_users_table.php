@@ -10,11 +10,12 @@ return new class implements Migration {
 
     public function up(): string
     {
-        return 'create table answers(
-                id          INTEGER primary key autoincrement,
-                text        TEXT        not null,
-                positive    INT,
-                question_id varchar(10) not null
+        return 'create table users(
+                id          INTEGER PRIMARY KEY autoincrement,
+                name varchar(255) NOT NULL,
+                email varchar(255) NOT NULL,
+                password varchar(255) NOT NULL,
+                role_id INTEGER default 0
                 );';
     }
 

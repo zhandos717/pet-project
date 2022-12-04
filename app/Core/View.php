@@ -14,7 +14,7 @@ final class View
      */
     public function render(string $view, ?array $params = []): void
     {
-        $path = VIEW_PATH . $view . '.php';
+        $path = view_path() . $view . '.php';
 
         if (!empty($params)) {
             extract($params);

@@ -13,7 +13,7 @@ final class Question extends Repository
      */
     public function answers(): array
     {
-       return $this->hasMany(Answer::class,['id', 'text']);
+       return $this->hasMany(Good::class,['id', 'text']);
     }
 }
 

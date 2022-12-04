@@ -27,7 +27,7 @@ if (!function_exists('dump')) {
 
 if (!function_exists('dd')) {
     #[NoReturn]
-    function dd($data):void
+    function dd($data): void
     {
         dump($data);
         die;
@@ -49,10 +49,10 @@ if (!function_exists('app')) {
     /**
      * @throws ReflectionException
      */
-    function app(string $class, ?string $method = null ): ?object
+    function app(string $class, ?string $method = null): ?object
     {
         $container = new Container();
-        return $container->has($class) ? $container->get($class,$method) : null;
+        return $container->has($class) ? $container->get($class, $method) : null;
     }
 }
 
@@ -97,17 +97,16 @@ if (!function_exists('get_percent')) {
 if (!function_exists('config')) {
     function config(string $key)
     {
-        $arr =  explode('.',$key);
-        $file = ROOT_PATH.'config/' . array_shift($arr).'.php';
+        $arr = explode('.', $key);
+        $file = root_path() . 'config/' . array_shift($arr) . '.php';
         $data = (include $file);
-        $result  = '';
+        $result = '';
 
-        array_walk_recursive($data, function($item, $key) use(&$result,&$arr)
-        {
-            if(empty($arr)){
-             return;
+        array_walk_recursive($data, function ($item, $key) use (&$result, &$arr) {
+            if (empty($arr)) {
+                return;
             }
-            if(in_array($key,$arr)){
+            if (in_array($key, $arr)) {
                 $result = $item;
             }
         });
@@ -118,7 +117,28 @@ if (!function_exists('config')) {
 if (!function_exists('env')) {
     function env(string $key, ?string $default = null): string|null
     {
-        $array = parse_ini_file(__DIR__.'/../.env');
+        $array = parse_ini_file(__DIR__ . '/../.env');
         return $array[$key] ?? $default;
+    }
+}
+
+if (!function_exists('app_path')) {
+    function app_path(?string $path = ''): string|null
+    {
+        return __DIR__ . $path;
+    }
+}
+
+if (!function_exists('root_path')) {
+    function root_path(?string $path = ''): string|null
+    {
+        return app_path() . '/../' . $path;
+    }
+}
+
+if (!function_exists('view_path')) {
+    function view_path(?string $path = ''): string|null
+    {
+        return app_path() . '/Views/' . $path;
     }
 }

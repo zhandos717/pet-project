@@ -10,11 +10,10 @@ return new class implements Migration {
 
     public function up(): string
     {
-        return 'create table results(
-                id    INTEGER primary key autoincrement,
-                data  TEXT not null,
-                total INTEGER,
-                uuid  varchar(255));';
+        return 'create table users(
+                id   INTEGER PRIMARY KEY autoincrement,
+                name VARCHAR(255) NOT NULL
+                );';
     }
 
     public function down()

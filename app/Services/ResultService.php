@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Repository\Answer;
+use App\Repository\Good;
 use App\Repository\Question;
 use App\Repository\Result;
 use Exception;
@@ -15,7 +15,7 @@ final class ResultService
     public function __construct(
         private readonly Question $question,
         private readonly Result $result,
-        private readonly Answer $answer
+        private readonly Good $answer
     ) {
     }
 
