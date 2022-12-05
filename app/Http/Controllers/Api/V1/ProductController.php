@@ -18,7 +18,13 @@ class ProductController
      */
     public function index(Request $request, Product $goods): array
     {
-        return ProductResource::collection($goods->all());
+
+
+        if($request->has('category_id')){
+            $goods->where('category_id',$request->get('category_id'));
+        }
+
+        return ProductResource::collection($goods->get());
     }
 
     /**

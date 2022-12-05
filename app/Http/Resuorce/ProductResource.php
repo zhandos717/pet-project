@@ -11,6 +11,7 @@ class ProductResource extends JsonResource
             'id'          => $this->resource['id'],
             'title'       => $this->resource['title'],
             'description' => $this->resource['description'],
+            'category_id' => $this->resource['category_id'],
             'images'      => $this->resource['images'],
             'reviews'     => $this->when(isset($this->resource['reviews']),
                 ReviewResource::collection($this->resource['reviews'] ?? null, false)),

@@ -119,21 +119,28 @@ class Repository
     public function get(?string $key = null)
     {
         $data = $this->db->query($this->getQueryBuilder())->fetchAll();
+
         $this->where = null;
         return $data[0][$key] ?? $data;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function getQueryBuilder(): string
     {
         $sql = '';
 
-        if (isset($this->select)) {
-            $sql .= $this->select;
+        if (!isset($this->select)) {
+            $this->select();
         }
+
+        $sql .= $this->select;
 
         if (isset($this->where)) {
             $sql .= ' WHERE ' . $this->where;
         }
+
         return $sql;
     }
 
