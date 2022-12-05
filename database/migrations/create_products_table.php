@@ -10,11 +10,13 @@ return new class implements Migration {
 
     public function up(): string
     {
-        return 'create table reviews(
-                id      INTEGER PRIMARY KEY autoincrement,
-                good_id INTEGER,
-                user_id INTEGER NOT NULL,
-                body    TEXT NOT NULL,
+        return 'create table products(
+                id          INTEGER PRIMARY KEY autoincrement,
+                title varchar(255) NOT NULL,
+                description  TEXT not null,
+                images  TEXT null,
+                category_id  TEXT null,
+                user_id  TEXT null,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 );';
     }

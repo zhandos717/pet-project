@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Core\DB;
+use App\Core\Request;
 use Exception;
 use ReflectionException;
 
@@ -13,7 +14,7 @@ class Repository
     /**
      * @var string
      */
-    protected $table = '';
+    protected $table;
 
     /**
      * @var DB
@@ -34,29 +35,59 @@ class Repository
      * @var string
      */
     private string $select;
+    /**
+     * @var mixed|null
+     */
+    protected array $data;
+    protected bool $find;
+
+    /**
+     * @throws ReflectionException
+     * @throws Exception
+     */
+    public function __construct(Request $request)
+    {
+        $this->db = new DB();
+
+        $id = $request->get(get_class_name($this));
+        if (is_int($id)) {
+            $this->find($id);
+        }
+    }
+
 
     /**
      * @throws ReflectionException
      */
-    public function __construct()
+    protected function getTableName(): string
     {
-        $this->db = new DB();
-
-        $this->table = get_class_name($this) . 's';
+        return $this->table ?? get_class_name($this) . 's';
     }
 
     /**
      * @throws Exception
      */
-    public function find(int $id){
-        return $this->select()->where('id', $id)->get()[0] ?? [];
+    public function find(int $id): self
+    {
+        $this->find = true;
+
+        $result = $this->select()->where('id', $id)->get();
+
+        if (!$result) {
+            throw new Exception(sprintf('Not found %s', get_class_name($this)), 404);
+        }
+
+        $this->data = $result;
+
+        return $this;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function select(array $colums = ['*']): self
     {
-        $colums = implode(',', $colums);
-
-        $this->select = "SELECT $colums  FROM $this->table ";
+        $this->select = 'SELECT ' . implode(',', $colums) . '  FROM ' . $this->getTableName();
         return $this;
     }
 
@@ -68,7 +99,7 @@ class Repository
         return $this->db->query($this->select()->select)->fetchAll();
     }
 
-    public function where( $column, $operator,  $value = null): self
+    public function where($column, $operator, $value = null): self
     {
         $this->where = $value === null ? " $column = '$operator' " : " $column $operator '$value' ";
         return $this;
@@ -79,7 +110,7 @@ class Repository
      */
     public function create(array $data)
     {
-      return  $this->db->create($this->table, $data);
+        return $this->db->create($this->getTableName(), $data);
     }
 
     /**
@@ -109,21 +140,54 @@ class Repository
     /**
      * @throws Exception
      */
-    protected function hasMany($class, array $params = ['*']): array
+    protected function hasMany($className, array $params = ['*']): array
     {
-        $class = app($class);
+        /**
+         * @var Repository $class
+         */
+        $class = app($className);
 
-        $foreignKey = substr($this->table, 0, -1);
-
-        return array_map(function ($item) use ($class, $foreignKey, $params) {
+        $data = array_map(function ($item) use ($class, $params) {
             return array_merge($item, [
-
-                get_class_name($class) . 's' =>
+                $class->getTableName() =>
                     $class
                         ->select($params)
-                        ->where($foreignKey . '_id', $item['id'])
+                        ->where(get_class_name($this) . '_id', $item['id'])
                         ->get()
             ]);
-        }, $this->all());
+        }, $this->data);
+
+        return $this->find ? array_shift($data) : $data;
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function delete(int $id): void
+    {
+        if (!$this->db->deleteById($this->getTableName(), $id)) {
+            throw new Exception(sprintf('Not found %s', get_class_name($this)), 404);
+        }
+    }
+
+
+    public function __call(string $name, array $arguments)
+    {
+        // TODO: Implement __call() method.
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public static function __callStatic($name, $arguments)
+    {
+
+        return app(self::class)->$name($arguments);
+    }
+
+    public function __invoke(): array
+    {
+        return $this->find ? array_shift($this->data) : $this->data;
     }
 }

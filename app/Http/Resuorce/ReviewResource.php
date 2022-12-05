@@ -2,15 +2,13 @@
 
 namespace App\Http\Resuorce;
 
-class GoodsResource extends JsonResource
+class ReviewResource extends JsonResource
 {
     public function toArray(): array
     {
         return [
             'id' => $this->resource['id'],
-            'title' => $this->resource['title'],
-            'description' => $this->resource['description'],
-            'images' => $this->resource['images'],
+            'body' => $this->resource['body'],
             'created_at' => $this->resource['created_at'],
         ];
     }

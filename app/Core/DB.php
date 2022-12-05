@@ -2,7 +2,6 @@
 
 namespace App\Core;
 
-use App\Config;
 use Exception;
 use PDO;
 use PDOStatement;
@@ -73,18 +72,28 @@ class DB
         return $this->query("select * from $table order by id desc limit 1")->fetch();
     }
 
+
+    /**
+     * @throws Exception
+     */
+    public function deleteById(string $table, int $id)
+    {
+        $sql = sprintf('DELETE FROM %s WHERE id = %d', $table, $id);
+        return $this->connect()->exec($sql);
+    }
+
     private function migrate(PDO $db): void
     {
         array_map(
         /**
          * @throws Exception
          */ function ($file) use ($db) {
-            $migrationClass = Config::PATH_MIGRATIONS . $file;
+            $migrationClass = config('database.migrations.path') . $file;
             if (filetype($migrationClass) === 'file') {
                 $db->exec((include $migrationClass)->up());
             }
         },
-            scandir(Config::PATH_MIGRATIONS)
+            scandir(config('app.migrations.path'))
         );
     }
 

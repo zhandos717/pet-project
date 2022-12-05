@@ -8,7 +8,7 @@ use Exception;
 
 class Route
 {
-    public static array $routes = [];
+    public static array $routes = ['POST', 'GET', 'PUT', 'PATCH', 'DELETE'];
 
     public static array $route = [];
 
@@ -17,7 +17,7 @@ class Route
         $url = ltrim($url, '/');
         $url = preg_replace('/{([a-z]+):([^\}]+)}/', '(?P<\1>\2)', $url);
         $route = '#^' . $url . '$#';
-        self::$routes[$route][$method] = [
+        self::$routes[$method][$route] = [
             'action' => $action
         ];
     }
@@ -27,6 +27,10 @@ class Route
         self::add('GET', $uri, $action);
     }
 
+    public static function delete(string $uri, $action): void
+    {
+        self::add('DELETE', $uri, $action);
+    }
 
     public static function put($uri, $action): void
     {
@@ -46,22 +50,21 @@ class Route
         [$uri] = explode('?', trim($_SERVER['REQUEST_URI'], '/'));
 
         $method = $_SERVER['REQUEST_METHOD'];
-
         $data = [];
 
-        foreach (self::$routes as $route => $params) {
+        if (!isset(self::$routes[$method])) {
+            throw new  Exception('Метод не поддерживается', 405);
+        }
+
+        foreach (self::$routes[$method] as $route => $params) {
             if (preg_match($route, $uri, $matches)) {
                 foreach ($matches as $key => $match) {
                     if (is_string($key)) {
                         $data[$key] = $match;
                     }
                 };
-                if (isset($params[$method])) {
-                    self::$route = array_merge(['data' => $data],$params[$method]);
-                    return;
-                }
-
-                throw new  Exception('Метод не поддерживается', 405);
+                self::$route = array_merge(['data' => $data], $params);
+                return;
             }
         }
 
@@ -110,4 +113,6 @@ class Route
             }
         }
     }
+
+
 }

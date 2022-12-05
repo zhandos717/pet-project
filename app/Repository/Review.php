@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-final class Result extends Repository
+final class Review extends Repository
 {
 
 }

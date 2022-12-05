@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Repository\Good;
+use App\Repository\Product;
 use App\Repository\Question;
 use Exception;
 use ReflectionException;
@@ -49,7 +49,7 @@ final class QuestionFactory
     public static function create(): void
     {
         $questionRepository = app(Question::class);
-        $answerRepository = app(Good::class);
+        $answerRepository = app(Product::class);
 
         $data = (new QuestionFactory)->definition();
 

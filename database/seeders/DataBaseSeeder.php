@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Repository\Good;
+use App\Repository\Product;
 use App\Repository\Question;
 use Database\Factories\QuestionFactory;
 use Exception;
