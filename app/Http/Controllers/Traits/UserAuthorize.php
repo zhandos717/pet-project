@@ -41,6 +41,12 @@ trait UserAuthorize
             throw new Exception('Запрещено', 403);
         }
 
-        return app(User::class)->where('token', $token)->get()[0];
+        $user = app(User::class)->where('token', $token)->get();
+
+        if (empty($user)){
+            throw new Exception('Запрещено', 403);
+        }
+
+        return  $user[0];
     }
 }

@@ -129,6 +129,13 @@ if (!function_exists('app_path')) {
     }
 }
 
+if (!function_exists('storage_path')) {
+    function storage_path(?string $path = ''): string|null
+    {
+        return __DIR__. '/../storage/' . $path;
+    }
+}
+
 if (!function_exists('root_path')) {
     function root_path(?string $path = ''): string|null
     {

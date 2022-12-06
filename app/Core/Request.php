@@ -28,9 +28,9 @@ final class Request
      *
      * @return mixed|null
      */
-    public function file($key): mixed
+    public function file(?string $key = null): mixed
     {
-        return $_FILES[$key] ?? null;
+        return $_FILES[$key] ?? $_FILES;
     }
 
     /**
