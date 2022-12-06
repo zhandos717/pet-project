@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Core;
 
-use App\Core\Route;
+use App\Di;
 use App\Di\Container;
 use Database\Seeders\DataBaseSeeder;
 use Exception;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resuorce;
+namespace App\Http\Resource;
 
 class ProductResource extends JsonResource
 {

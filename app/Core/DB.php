@@ -27,7 +27,7 @@ class DB
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-            $this->checkTable($db);
+            // $this->checkTable($db);
 
             return $db;
         } catch (Exception $e) {
@@ -82,6 +82,29 @@ class DB
         return $this->connect()->exec($sql);
     }
 
+    /**
+     * @throws Exception
+     */
+    public function update(string $table, array $fields, array $where)
+    {
+
+        $fields = implode(',', array_map(function ($item, $key) {
+            return sprintf("%s = '%s' ", $key, $item);
+        }, array_values($fields), array_keys($fields)));
+
+        $where = implode(',', array_map(function ($item, $key) {
+            return sprintf("%s = '%s' ", $key, $item);
+        }, array_values($where), array_keys($where)));
+
+
+        $sql = "UPDATE $table  SET $fields  WHERE $where ";
+
+        $this->query($sql);
+
+        return $this->query("select * from $table WHERE $where ")->fetch();
+
+    }
+
     private function migrate(PDO $db): void
     {
         array_map(
@@ -103,9 +126,7 @@ class DB
     {
         $count = $db->query("SELECT COUNT(*) as count FROM sqlite_master WHERE type='table'")->fetch()['count'];
 
-        if ($count === 0 && config('app.migrations')) {
-            $this->migrate($db);
-        }
+        $this->migrate($db);
     }
 }
 

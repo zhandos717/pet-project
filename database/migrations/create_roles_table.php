@@ -10,8 +10,8 @@ return new class implements Migration {
 
     public function up(): string
     {
-        return 'create table users(
-                id   INTEGER PRIMARY KEY autoincrement,
+        return 'create table roles(
+                id   INTEGER PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(255) NOT NULL
                 );';
     }

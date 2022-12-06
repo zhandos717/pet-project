@@ -3,13 +3,27 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Core\Request;
-use App\Http\Resuorce\CategoryResource;
-use App\Http\Resuorce\MessageResource;
+use App\Enums\Role;
+use App\Http\Controllers\Traits\UserAuthorize;
+use App\Http\Resource\CategoryResource;
+use App\Http\Resource\MessageResource;
 use App\Repository\Category;
 use Exception;
+use ReflectionException;
 
 class CategoryController
 {
+
+    use  UserAuthorize;
+
+
+    /**
+     * @throws ReflectionException
+     */
+    public function __construct()
+    {
+        $this->can(Role::ADMIN);
+    }
 
     /**
      * @param Request  $request

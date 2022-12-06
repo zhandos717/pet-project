@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="889d62f7-435d-4d0b-8237-ccbf9721002e" name="beget">
+        <fileTransfer rootFolder="/home/a/adiltao7/adiltao7.beget.tech/public_html" accessType="SFTP" host="adiltao7.beget.tech" port="22" sshConfigId="d316efe7-3299-4299-9f43-66b40d0490a3" sshConfig="adiltao7@adiltao7.beget.tech:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

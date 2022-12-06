@@ -11,7 +11,7 @@ return new class implements Migration {
     public function up(): string
     {
         return 'create table users(
-                id          INTEGER PRIMARY KEY autoincrement,
+                id          INTEGER PRIMARY KEY AUTO_INCREMENT,
                 name varchar(255) NOT NULL,
                 email varchar(255) NOT NULL,
                 password varchar(255) NOT NULL,

@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Core\Request;
-use App\Http\Resuorce\ProductResource;
+use App\Enums\Role;
+use App\Http\Controllers\Traits\UserAuthorize;
+use App\Http\Resource\ProductResource;
 use App\Repository\Product;
 use Exception;
 
 class ProductController
 {
+    use  UserAuthorize;
+
     /**
      * @param Request $request
      * @param Product $goods
@@ -18,8 +22,6 @@ class ProductController
      */
     public function index(Request $request, Product $goods): array
     {
-
-
         if($request->has('category_id')){
             $goods->where('category_id',$request->get('category_id'));
         }
@@ -36,6 +38,8 @@ class ProductController
      */
     public function store(Request $request, Product $goods): ProductResource
     {
+        $this->can(Role::ADMIN);
+
         return new ProductResource(
             $goods->create([
                 'title' => $request->get('title'),
@@ -48,7 +52,7 @@ class ProductController
 
     /**
      * @param Request $request
-     * @param Product $goods
+     * @param Product $product
      *
      * @return ProductResource
      * @throws Exception

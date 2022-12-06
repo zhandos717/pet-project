@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resuorce;
+namespace App\Http\Resource;
 
 abstract class JsonResource
 {
@@ -14,9 +14,13 @@ abstract class JsonResource
 
     public function __invoke(): array
     {
-        return ['data' => $this->resource ? array_filter($this->toArray(),function ($item){
-           return !is_null($item);
-        }) : []];
+        return ['data' => $this->resource ? array_map(function ($data) {
+
+            return is_array($data) ? array_filter($data, function ($item) {
+                return !is_null($item);
+            }) : $data;
+
+        }, $this->toArray()) : []];
     }
 
     public static function collection(?array $items = [], bool $wrap = true): array|null
@@ -24,23 +28,23 @@ abstract class JsonResource
         $class = get_called_class();
         $arr = [];
 
-        if(!isset($items)){
+        if (!isset($items)) {
             return null;
         }
 
         foreach ($items as $item) {
-            $arr[] = (new $class($item))->toArray();
+            $arr[] = (new $class($item))();
         }
 
-        return $wrap ?  ['data' => $arr] : $arr;
+        return $wrap ? ['data' => $arr] : $arr;
     }
 
     abstract function toArray(): array;
 
     protected function when(bool $condition, mixed $callback): mixed
     {
-        if(!$condition){
-            return  null;
+        if (!$condition) {
+            return null;
         }
 
         return is_callable($callback) ? $callback() : $callback;

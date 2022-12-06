@@ -1,7 +1,7 @@
 <?php
 
+use App\Core\Kernel;
 use App\Di\Container;
-use  App\Kernel;
 
 require __DIR__ . '/../app/init.php';
 

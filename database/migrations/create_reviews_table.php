@@ -11,7 +11,7 @@ return new class implements Migration {
     public function up(): string
     {
         return 'create table reviews(
-                id      INTEGER PRIMARY KEY autoincrement,
+                id      INTEGER PRIMARY KEY AUTO_INCREMENT,
                 good_id INTEGER,
                 user_id INTEGER NOT NULL,
                 body    TEXT NOT NULL,

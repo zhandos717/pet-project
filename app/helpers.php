@@ -132,7 +132,7 @@ if (!function_exists('app_path')) {
 if (!function_exists('root_path')) {
     function root_path(?string $path = ''): string|null
     {
-        return app_path() . '/../' . $path;
+        return __DIR__. '/../' . $path;
     }
 }
 

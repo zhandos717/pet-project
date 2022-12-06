@@ -12,7 +12,7 @@ final class Request
     {
         $this->request = array_merge($_REQUEST, (array)json_decode(file_get_contents('php://input')));
     }
-    
+
     public function get($key, $default = null)
     {
         return $this->request[$key] ?? $default;
@@ -25,6 +25,7 @@ final class Request
 
     /**
      * @param $key
+     *
      * @return mixed|null
      */
     public function file($key): mixed
@@ -39,4 +40,10 @@ final class Request
     {
         return $this->request;
     }
+
+    public function headers(?string $key = null)
+    {
+        return getallheaders()[$key] ?? getallheaders();
+    }
+
 }

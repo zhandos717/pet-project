@@ -108,9 +108,11 @@ class Repository
     /**
      * @throws Exception
      */
-    public function create(array $data)
+    public function create(array $data): self
     {
-        return $this->db->create($this->getTableName(), $data);
+        $this->data = $this->db->create($this->getTableName(), $data);
+
+        return $this;
     }
 
     /**
@@ -178,10 +180,15 @@ class Repository
         }
     }
 
-
-    public function __call(string $name, array $arguments)
+    /**
+     * @throws ReflectionException
+     * @throws Exception
+     */
+    public function update(array $data, array $where): static
     {
-        // TODO: Implement __call() method.
+        $this->data = $this->db->update($this->getTableName(), $data, $where);
+
+        return $this;
     }
 
     /**
@@ -195,6 +202,6 @@ class Repository
 
     public function __invoke(): array
     {
-        return $this->find ? array_shift($this->data) : $this->data;
+        return isset($this->find) ? array_shift($this->data) : $this->data;
     }
 }

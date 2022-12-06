@@ -3,7 +3,7 @@
 namespace App\Core;
 
 use App\Di\Container;
-use App\Http\Resuorce\JsonResource;
+use App\Http\Resource\JsonResource;
 use Exception;
 
 class Route
@@ -48,9 +48,11 @@ class Route
     private static function match(): void
     {
         [$uri] = explode('?', trim($_SERVER['REQUEST_URI'], '/'));
-
+        
         $method = $_SERVER['REQUEST_METHOD'];
+        
         $data = [];
+     
 
         if (!isset(self::$routes[$method])) {
             throw new  Exception('Метод не поддерживается', 405);
