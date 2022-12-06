@@ -24,11 +24,11 @@ class OrderController
 
     public function store(Request $request, Order $order)
     {
-
         $order->create([
             'name'    => $request->get('name'),
             'phone'   => $request->get('phone'),
-            'address' => $request->get('address')
+            'address' => $request->get('address'),
+            'data'    => json_encode(['products' => $request->get('products')]),
         ]);
 
         return new OrderResource($order);

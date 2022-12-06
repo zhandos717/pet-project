@@ -105,6 +105,13 @@ class Repository
         return $this;
     }
 
+    public function whereIn($column, array $value = null): self
+    {
+        $this->where = " $column IN ( " . implode(',', $value) . " ) ";
+        return $this;
+    }
+
+
     /**
      * @throws Exception
      */

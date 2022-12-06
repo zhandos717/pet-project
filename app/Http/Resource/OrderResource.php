@@ -13,6 +13,7 @@ class OrderResource extends JsonResource
             'phone'      => $this->resource['phone'],
             'address'    => $this->resource['address'],
             'created_at' => $this->resource['created_at'],
+            'data'       => json_decode($this->resource['data']),
         ];
     }
 }
