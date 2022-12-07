@@ -23,7 +23,8 @@ class AuthController
             'name'     => $request->get('name'),
             'email'    => $request->get('email'),
             'password' => password_hash($request->get('password'), PASSWORD_DEFAULT),
-            'role_id'  => 1,
+            'token'    => password_hash(uuid(), PASSWORD_BCRYPT),
+            'role_id'  => 1
         ]);
 
         return new UserResource($user);
@@ -38,7 +39,7 @@ class AuthController
             throw new Exception('Заполните данные', 401);
         }
 
-      return  new UserResource($user->auth($request->get('email'),$request->get('password')));
+        return new UserResource($user->auth($request->get('email'), $request->get('password')));
     }
 
     /**
@@ -46,10 +47,10 @@ class AuthController
      */
     public function logout(User $user): MessageResource
     {
-        $user->update(['token'=>null],['token'=>$this->getUser()['token']]);
+        $user->update(['token' => null], ['token' => $this->getUser()['token']]);
 
         return new MessageResource([
-            'message'=>'Токен удален!'
+            'message' => 'Токен удален!'
         ]);
     }
 }

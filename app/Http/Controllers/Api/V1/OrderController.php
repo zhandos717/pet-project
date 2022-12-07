@@ -24,6 +24,8 @@ class OrderController
 
     public function store(Request $request, Order $order)
     {
+        $this->getUser();
+
         $order->create([
             'name'    => $request->get('name'),
             'phone'   => $request->get('phone'),
@@ -43,6 +45,8 @@ class OrderController
      */
     public function destroy(Request $request, Order $order): MessageResource
     {
+        $this->can(Role::ADMIN);
+        
         $order->delete($request->get('order'));
         return new MessageResource([
             'message' => 'Запись удалена!'
